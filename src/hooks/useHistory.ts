@@ -53,11 +53,11 @@ export const useCounterHistory = () => {
     if (!last) return;
 
     const current = getCurrent();
-    let newCount = current;
-
-    if (last.type === 'increment') newCount++;
-   if (last.type === 'decrement') newCount--;
-    if (last.type === 'reset') newCount = 0;
+ 
+ const newCount =
+    last.type === 'increment' ? current + 1 :
+    last.type === 'decrement' ? current - 1 :
+    last.type === 'reset' ? 0 : current;
 
     setFutureMap(prev => ({
       ...prev,
