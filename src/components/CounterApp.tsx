@@ -2,6 +2,7 @@
 import { Counter, useCounter } from "@/hooks/useCounter";
 import CounterCard from "./CounterCard";
 
+
 const CounterApp = () => {
   const {
     counters,
@@ -13,6 +14,8 @@ const CounterApp = () => {
     redo,
     removeCounter,
   } = useCounter();
+
+
 
   return (
     <div className="">

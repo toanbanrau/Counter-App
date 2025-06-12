@@ -1,4 +1,6 @@
 import { Counter } from "@/hooks/useCounter";
+import { motion } from "motion/react";
+import { useState } from "react";
 
 interface CounterCardProps {
   counter: Counter;
@@ -19,11 +21,34 @@ const CounterCard = ({
   undo,
   redo,
 }: CounterCardProps) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (!isFocused) return;
+    event.preventDefault();
+    if (event.key === "ArrowUp") {
+      increment(counter.id);
+    }
+    if (event.key === "ArrowDown") {
+      decrement(counter.id);
+    }
+  };
+
   return (
-    <div className="bg-gradient-to-br from-blue-500 to-purple-500 p-6 rounded-lg shadow-lg text-white flex flex-col items-center">
-      <p className="text-5xl font-extrabold text-white drop-shadow mb-6">
+    <div
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      onKeyDown={handleKeyDown}
+      className="bg-gradient-to-br from-blue-500 to-purple-500 p-6 rounded-lg shadow-lg text-white flex flex-col items-center"
+    >
+      <motion.p
+        key={counter.count}
+        initial={{ opacity: 0, y: -40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="text-5xl font-extrabold text-white drop-shadow mb-6"
+      >
         {counter.count}
-      </p>
+      </motion.p>
       <div>
         <button
           onClick={() => decrement(counter.id)}
