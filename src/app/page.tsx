@@ -1,5 +1,6 @@
-import CounterDisplay from "@/components/CounterDisplay";
+import CounterApp from "@/components/CounterApp";
+
 
 export default function Home() {
-  return <CounterDisplay />;
+  return <CounterApp />;
 }
