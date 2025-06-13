@@ -3,7 +3,6 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { motion } from "motion/react";
 import { useState } from "react";
-import style from "styled-jsx/style";
 
 interface CounterCardProps {
   counter: Counter;
@@ -51,15 +50,34 @@ const CounterCard = ({
       ref={setNodeRef}
       style={style}
       {...attributes}
-      {...listeners}
       className="p-4 bg-white rounded-lg shadow-md cursor-grab active:cursor-grabbing"
     >
       <div
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onKeyDown={handleKeyDown}
-        className="bg-gradient-to-br from-blue-500 to-purple-500 p-6 rounded-lg shadow-lg text-white flex flex-col items-center"
+        className="relative bg-gradient-to-br from-blue-500 to-purple-500 p-6 rounded-lg shadow-lg text-white flex flex-col items-center"
       >
+        {" "}
+        <div
+          {...listeners}
+          className="absolute top-0 left-0 m-2 p-1 rounded-md bg-gray-100/50 hover:bg-gray-200/80 transition-colors cursor-grab active:cursor-grabbing"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"
+            />
+          </svg>
+        </div>
         <motion.p
           key={counter.count}
           initial={{ opacity: 0, y: -40 }}
@@ -102,7 +120,12 @@ const CounterCard = ({
           >
             Redo
           </button>
-          <button onClick={() => removeCounter(counter.id)}>Remove</button>
+          <button
+            onClick={() => removeCounter(counter.id)}
+            className="px-4 py-2 rounded-lg bg-white/20 hover:bg-gray-700 text-lg font-semibold text-white shadow-md border-2 border-white/30 transition-all duration-200 hover:scale-105 focus:outline-none"
+          >
+            Remove
+          </button>
         </div>
       </div>
     </div>

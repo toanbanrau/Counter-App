@@ -11,6 +11,7 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 
+
 const CounterApp = () => {
   const {
     counters,
@@ -49,11 +50,11 @@ const CounterApp = () => {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <SortableContext items={counters}>
+        <SortableContext items={counters.map((counter) => counter.id)}>
           <div className="grid grid-cols-4 gap-5 border p-4 rounded shadow-lg">
-            {counters.map((counter: Counter, index: number) => (
+            {counters.map((counter: Counter) => (
               <CounterCard
-                key={index}
+                key={counter.id}
                 undo={undo}
                 redo={redo}
                 counter={counter}
