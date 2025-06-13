@@ -1,11 +1,20 @@
 "use client";
 import { Counter, useCounter } from "@/hooks/useCounter";
 import CounterCard from "./CounterCard";
-
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 
 const CounterApp = () => {
   const {
     counters,
+    setCounters,
     creatCounter,
     increment,
     decrement,
@@ -15,7 +24,17 @@ const CounterApp = () => {
     removeCounter,
   } = useCounter();
 
-
+  const sensors = useSensors(useSensor(PointerSensor));
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (active.id !== over?.id) {
+      setCounters((prevCounters) => {
+        const oldIndex = prevCounters.findIndex((c) => c.id === active.id);
+        const newIndex = prevCounters.findIndex((c) => c.id === over?.id);
+        return arrayMove(prevCounters, oldIndex, newIndex);
+      });
+    }
+  };
 
   return (
     <div className="">
@@ -25,20 +44,28 @@ const CounterApp = () => {
       <button className="btn" onClick={creatCounter}>
         Add Couter
       </button>
-      <div className="grid grid-cols-4 gap-5 border p-4 rounded shadow-lg">
-        {counters.map((counter: Counter, index: number) => (
-          <CounterCard
-            key={index}
-            undo={undo}
-            redo={redo}
-            counter={counter}
-            increment={increment}
-            decrement={decrement}
-            reset={reset}
-            removeCounter={removeCounter}
-          />
-        ))}
-      </div>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext items={counters}>
+          <div className="grid grid-cols-4 gap-5 border p-4 rounded shadow-lg">
+            {counters.map((counter: Counter, index: number) => (
+              <CounterCard
+                key={index}
+                undo={undo}
+                redo={redo}
+                counter={counter}
+                increment={increment}
+                decrement={decrement}
+                reset={reset}
+                removeCounter={removeCounter}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
     </div>
   );
 };

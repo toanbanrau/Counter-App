@@ -1,6 +1,9 @@
 import { Counter } from "@/hooks/useCounter";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { motion } from "motion/react";
 import { useState } from "react";
+import style from "styled-jsx/style";
 
 interface CounterCardProps {
   counter: Counter;
@@ -22,6 +25,16 @@ const CounterCard = ({
   redo,
 }: CounterCardProps) => {
   const [isFocused, setIsFocused] = useState(false);
+
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: counter.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition: transition,
+    touchAction: "none",
+  };
+
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (!isFocused) return;
     event.preventDefault();
@@ -35,54 +48,62 @@ const CounterCard = ({
 
   return (
     <div
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      onKeyDown={handleKeyDown}
-      className="bg-gradient-to-br from-blue-500 to-purple-500 p-6 rounded-lg shadow-lg text-white flex flex-col items-center"
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="p-4 bg-white rounded-lg shadow-md cursor-grab active:cursor-grabbing"
     >
-      <motion.p
-        key={counter.count}
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        className="text-5xl font-extrabold text-white drop-shadow mb-6"
+      <div
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        onKeyDown={handleKeyDown}
+        className="bg-gradient-to-br from-blue-500 to-purple-500 p-6 rounded-lg shadow-lg text-white flex flex-col items-center"
       >
-        {counter.count}
-      </motion.p>
-      <div>
-        <button
-          onClick={() => decrement(counter.id)}
-          className="px-4 py-2 rounded-lg bg-white/20 hover:bg-gray-700 text-lg font-semibold text-white shadow-md border-2 border-white/30 transition-all duration-200 hover:scale-105 focus:outline-none"
+        <motion.p
+          key={counter.count}
+          initial={{ opacity: 0, y: -40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="text-5xl font-extrabold text-white drop-shadow mb-6"
         >
-          -
-        </button>
-        <button
-          onClick={() => increment(counter.id)}
-          className="px-4 py-2 rounded-lg bg-white/20 hover:bg-gray-700 text-lg font-semibold text-white shadow-md border-2 border-white/30 transition-all duration-200 hover:scale-105 focus:outline-none"
-        >
-          +
-        </button>
-        <button
-          onClick={() => reset(counter.id)}
-          className="px-4 py-2 rounded-lg bg-white/20 hover:bg-gray-700 text-lg font-semibold text-white shadow-md border-2 border-white/30 transition-all duration-200 hover:scale-105 focus:outline-none"
-        >
-          Reset
-        </button>
-      </div>
-      <div>
-        <button
-          onClick={() => undo(counter.id)}
-          className="px-4 py-2 rounded-lg bg-white/20 hover:bg-gray-700 text-lg font-semibold text-white shadow-md border-2 border-white/30 transition-all duration-200 hover:scale-105 focus:outline-none"
-        >
-          Undo
-        </button>
-        <button
-          onClick={() => redo(counter.id)}
-          className="px-4 py-2 rounded-lg bg-white/20 hover:bg-gray-700 text-lg font-semibold text-white shadow-md border-2 border-white/30 transition-all duration-200 hover:scale-105 focus:outline-none"
-        >
-          Redo
-        </button>
-        <button onClick={() => removeCounter(counter.id)}>Remove</button>
+          {counter.count}
+        </motion.p>
+        <div>
+          <button
+            onClick={() => decrement(counter.id)}
+            className="px-4 py-2 rounded-lg bg-white/20 hover:bg-gray-700 text-lg font-semibold text-white shadow-md border-2 border-white/30 transition-all duration-200 hover:scale-105 focus:outline-none"
+          >
+            -
+          </button>
+          <button
+            onClick={() => increment(counter.id)}
+            className="px-4 py-2 rounded-lg bg-white/20 hover:bg-gray-700 text-lg font-semibold text-white shadow-md border-2 border-white/30 transition-all duration-200 hover:scale-105 focus:outline-none"
+          >
+            +
+          </button>
+          <button
+            onClick={() => reset(counter.id)}
+            className="px-4 py-2 rounded-lg bg-white/20 hover:bg-gray-700 text-lg font-semibold text-white shadow-md border-2 border-white/30 transition-all duration-200 hover:scale-105 focus:outline-none"
+          >
+            Reset
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={() => undo(counter.id)}
+            className="px-4 py-2 rounded-lg bg-white/20 hover:bg-gray-700 text-lg font-semibold text-white shadow-md border-2 border-white/30 transition-all duration-200 hover:scale-105 focus:outline-none"
+          >
+            Undo
+          </button>
+          <button
+            onClick={() => redo(counter.id)}
+            className="px-4 py-2 rounded-lg bg-white/20 hover:bg-gray-700 text-lg font-semibold text-white shadow-md border-2 border-white/30 transition-all duration-200 hover:scale-105 focus:outline-none"
+          >
+            Redo
+          </button>
+          <button onClick={() => removeCounter(counter.id)}>Remove</button>
+        </div>
       </div>
     </div>
   );
