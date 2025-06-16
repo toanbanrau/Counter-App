@@ -2,6 +2,7 @@ import { Counter } from "@/hooks/useCounter";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { motion } from "motion/react";
+import React from "react";
 import { useState } from "react";
 
 interface CounterCardProps {
@@ -26,7 +27,9 @@ const CounterCard = ({
   const [isFocused, setIsFocused] = useState(false);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: counter.id });
+    useSortable({
+      id: counter.id,
+    });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -132,4 +135,4 @@ const CounterCard = ({
   );
 };
 
-export default CounterCard;
+export default React.memo(CounterCard);

@@ -11,7 +11,6 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 
-
 const CounterApp = () => {
   const {
     counters,
