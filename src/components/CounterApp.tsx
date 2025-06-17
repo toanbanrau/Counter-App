@@ -27,13 +27,12 @@ const CounterApp = () => {
   const sensors = useSensors(useSensor(PointerSensor));
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (active.id !== over?.id) {
-      setCounters((prevCounters) => {
-        const oldIndex = prevCounters.findIndex((c) => c.id === active.id);
-        const newIndex = prevCounters.findIndex((c) => c.id === over?.id);
-        return arrayMove(prevCounters, oldIndex, newIndex);
-      });
-    }
+    if (active.id == over?.id) return;
+    setCounters((prevCounters) => {
+      const oldIndex = prevCounters.findIndex((c) => c.id === active.id);
+      const newIndex = prevCounters.findIndex((c) => c.id === over?.id);
+      return arrayMove(prevCounters, oldIndex, newIndex);
+    });
   };
 
   return (
