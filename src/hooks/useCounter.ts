@@ -1,20 +1,24 @@
-'use client'
-import { useEffect, useState } from 'react'
-import { useCounterHistory } from './useHistory'
+"use client";
+import { useEffect, useState } from "react";
+import { useCounterHistory } from "./useHistory";
 
 export interface Counter {
-  id: string
-  count: number
+  id: string;
+  count: number;
 }
 
 export const useCounter = () => {
-  const [counters, setCounters] = useState<Counter[]>([])
-  const { updateHistory, undo: undoHistory, redo: redoHistory } = useCounterHistory();
+  const [counters, setCounters] = useState<Counter[]>([]);
+  const {
+    updateHistory,
+    undo: undoHistory,
+    redo: redoHistory,
+  } = useCounterHistory();
 
   useEffect(() => {
     const key = Object.keys(localStorage);
     const counters = key.map((key) => {
-      return JSON.parse(localStorage.getItem(`${key}`) || '{}')
+      return JSON.parse(localStorage.getItem(`${key}`) || "{}");
     });
     setCounters(counters);
   }, []);
@@ -35,21 +39,21 @@ export const useCounter = () => {
   const increment = (id: string) => {
     const counter = counters.find((counter) => counter.id === id)!;
     if (!counter) return;
-    updateHistory(id, { type: 'increment', prev: counter.count });
-    updateCount(id, counter.count + 1)
+    updateHistory(id, { type: "increment", prev: counter.count });
+    updateCount(id, counter.count + 1);
   };
 
   const decrement = (id: string) => {
     const counter = counters.find((counter) => counter.id === id)!;
     if (!counter) return;
-    updateHistory(id, { type: 'decrement', prev: counter.count });
+    updateHistory(id, { type: "decrement", prev: counter.count });
     updateCount(id, counter.count - 1);
   };
 
   const reset = (id: string) => {
-    const counter = counters.find((counter) => counter.id === id)!
+    const counter = counters.find((counter) => counter.id === id)!;
     if (!counter) return;
-    updateHistory(id, { type: 'reset', prev: counter.count });
+    updateHistory(id, { type: "reset", prev: counter.count });
     updateCount(id, 0);
   };
 
@@ -79,11 +83,7 @@ export const useCounter = () => {
   const undo = (id: string) => {
     const counter = counters.find((c) => c.id === id);
     if (!counter) return;
-    undoHistory(
-      id,
-      () => counter.count,
-      (value) => updateCount(id, value),
-    );
+    undoHistory(id, (value) => updateCount(id, value));
   };
 
   return {

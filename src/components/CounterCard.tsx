@@ -4,6 +4,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { motion } from "motion/react";
 import React from "react";
 import { useState } from "react";
+import Dragicon from "./icons/Dragicon";
 
 interface CounterCardProps {
   counter: Counter;
@@ -66,20 +67,8 @@ const CounterCard = ({
           {...listeners}
           className="absolute top-0 left-0 m-2 p-1 rounded-md bg-gray-100/50 hover:bg-gray-200/80 transition-colors cursor-grab active:cursor-grabbing"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"
-            />
-          </svg>
+          {/* drag icom -> props cua svg */}
+          <Dragicon color="red" />
         </div>
         <motion.p
           key={counter.count}
