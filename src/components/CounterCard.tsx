@@ -68,7 +68,7 @@ const CounterCard = ({
           className="absolute top-0 left-0 m-2 p-1 rounded-md bg-gray-100/50 hover:bg-gray-200/80 transition-colors cursor-grab active:cursor-grabbing"
         >
           {/* drag icom -> props cua svg */}
-          <Dragicon color="red" />
+          <Dragicon color="red" size={20} />
         </div>
         <motion.p
           key={counter.count}

@@ -37,12 +37,15 @@ const CounterApp = () => {
   };
 
   return (
-    <div className="">
-      <div className="flex items-center w-full">
+    <div>
+      <div className="flex justify-center items-center w-full">
         <h1 className="text-4xl font-bold mb-4">Counter App</h1>
       </div>
-      <button className="btn" onClick={creatCounter}>
-        Add Couter
+      <button
+        className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-pink-600 hover:to-yellow-500 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition-all duration-200"
+        onClick={creatCounter}
+      >
+        Add Counter
       </button>
       <DndContext
         sensors={sensors}
@@ -50,7 +53,7 @@ const CounterApp = () => {
         onDragEnd={handleDragEnd}
       >
         <SortableContext items={counters.map((counter) => counter.id)}>
-          <div className="grid grid-cols-4 gap-5 border p-4 rounded shadow-lg">
+          <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-5 border p-4 rounded shadow-lg">
             {counters.map((counter: Counter) => (
               <CounterCard
                 key={counter.id}
